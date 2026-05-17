@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stylish_store/config/routes/routes.dart';
+import 'package:stylish_store/config/themes/app_colors.dart';
 
 class OnBoardingBottomRow extends StatelessWidget {
   final int currentPage;
@@ -34,8 +35,8 @@ class OnBoardingBottomRow extends StatelessWidget {
 
                 decoration: BoxDecoration(
                   color: currentPage == dotIndex
-                      ? AppColors.primaryDark
-                      : AppColors.dotInactive,
+                      ? AppColors.darkPrimary
+                      : AppColors.grey4,
 
                   borderRadius: BorderRadius.circular(10),
                 ),

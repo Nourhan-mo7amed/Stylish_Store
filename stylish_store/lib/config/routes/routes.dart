@@ -22,6 +22,7 @@ class Routes {
   // Auth Routes
   static const String splashScreen = '/';
   static const String onboardingScreen = '/onboarding';
-
-  // Add more routes here as needed
+  static const String loginView = '/login';
+  static const String signupView = '/signup';
+  static const String forgotPasswordView = '/forgot-password';
 }

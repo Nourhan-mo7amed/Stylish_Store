@@ -16,13 +16,13 @@ class AppTextStyles {
   static final TextStyle pageCounterStyle = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w700,
-    color: AppColors.textDark,
+    color: AppColors.onBackground,
   );
 
   static final TextStyle pageCounterSlashStyle = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w600,
-    color: AppColors.textLightGrey,
+    color: AppColors.grey4,
   );
 
   static const TextStyle skipButtonStyle = TextStyle(
@@ -33,6 +33,11 @@ class AppTextStyles {
   static final TextStyle nextButtonStyle = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w600,
-    color: AppColors.accentPink,
+    color: AppColors.primary,
+  );
+  static final TextStyle boldW70036 = TextStyle(
+    fontSize: 36,
+    fontWeight: FontWeight.w700,
+    color: AppColors.onBackground,
   );
 }

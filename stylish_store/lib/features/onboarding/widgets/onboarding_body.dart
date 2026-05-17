@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stylish_store/config/routes/routes.dart';
 
+
 class OnBoardingBody extends StatelessWidget {
   final OnBoardingModel model;
 

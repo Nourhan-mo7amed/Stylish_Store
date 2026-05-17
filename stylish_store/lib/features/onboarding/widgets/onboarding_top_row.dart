@@ -31,7 +31,12 @@ class OnBoardingTopRow extends StatelessWidget {
             ),
           ),
 
-          const Text("Skip", style: AppTextStyles.skipButtonStyle),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushReplacementNamed(context, Routes.loginView);
+            },
+            child: const Text("Skip", style: AppTextStyles.skipButtonStyle),
+          ),
         ],
       ),
     );
