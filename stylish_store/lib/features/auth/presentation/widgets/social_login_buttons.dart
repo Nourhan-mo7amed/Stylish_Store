@@ -18,10 +18,9 @@ class SocialLoginButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 75),
         Text(
           '- OR Continue with -',
-          style: AppTextStyles.regular14.copyWith(
+          style: AppTextStyles.semiBold14.copyWith(
             color: const Color(0xff626262),
           ),
         ),

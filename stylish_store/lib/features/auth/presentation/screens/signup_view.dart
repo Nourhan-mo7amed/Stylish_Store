@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:stylish_store/config/routes/routes.dart';
-import 'package:stylish_store/config/themes/app_colors.dart';
 import 'package:stylish_store/features/auth/logic/controllers/auth_controller.dart';
 import 'package:stylish_store/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:stylish_store/features/auth/presentation/widgets/auth_button.dart';
 import 'package:stylish_store/features/auth/data/validators/auth_validators.dart';
+import 'package:stylish_store/features/auth/presentation/widgets/social_login_buttons.dart';
 
 class SignupView extends StatefulWidget {
   const SignupView({super.key});
@@ -59,7 +59,7 @@ class _SignupViewState extends State<SignupView> {
                         isPassword: false,
                         validator: AuthValidators.validateEmailOrUsername,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 31),
                       AuthTextField(
                         controller: _controller.passwordController,
                         hintText: 'Password',
@@ -67,7 +67,7 @@ class _SignupViewState extends State<SignupView> {
                         isPassword: true,
                         validator: AuthValidators.validatePassword,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 31),
                       AuthTextField(
                         controller: _controller.confirmPasswordController,
                         hintText: 'Confirm Password',
@@ -80,7 +80,7 @@ class _SignupViewState extends State<SignupView> {
                           );
                         },
                       ),
-                      SizedBox(height: 24),
+                      SizedBox(height: 19),
 
                       /// Terms Text
                       RichText(
@@ -112,7 +112,7 @@ class _SignupViewState extends State<SignupView> {
                         ),
                       ),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 38),
 
                       AuthButton(
                         onPressed: _handleSignup,
@@ -121,9 +121,15 @@ class _SignupViewState extends State<SignupView> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 40),
 
-                const SizedBox(height: 24),
+                /// Social Login
+                SocialLoginButtons(
+                  onGooglePressed: () {},
+                  onApplePressed: () {},
+                  onFacebookPressed: () {},
+                ),
+                const SizedBox(height: 28),
 
                 /// Login Link
                 Center(

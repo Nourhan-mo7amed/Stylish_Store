@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stylish_store/config/routes/routes.dart';
-import 'package:stylish_store/config/themes/app_colors.dart';
-import 'widgets/onboarding_top_row.dart';
-import 'widgets/onboarding_body.dart';
-import 'widgets/onboarding_bottom_row.dart';
 
 
 class OnBoardingScreen extends StatefulWidget {

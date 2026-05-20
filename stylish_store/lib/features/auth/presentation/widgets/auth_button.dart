@@ -38,7 +38,7 @@ class AuthButton extends StatelessWidget {
               )
             : Text(
                 text,
-                style: AppTextStyles.bold16.copyWith(color: Colors.white),
+                style: AppTextStyles.semiBold20.copyWith(color: Colors.white),
               ),
       ),
     );

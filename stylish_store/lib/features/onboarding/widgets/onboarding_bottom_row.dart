@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stylish_store/config/routes/routes.dart';
-import 'package:stylish_store/config/themes/app_colors.dart';
 
 class OnBoardingBottomRow extends StatelessWidget {
   final int currentPage;
