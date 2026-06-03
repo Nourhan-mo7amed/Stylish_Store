@@ -4,11 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:stylish_store/core/failures/failure.dart';
 import 'package:stylish_store/core/networking/api_consumer.dart';
 import 'package:stylish_store/core/networking/api_endpoints.dart';
+import 'package:stylish_store/core/networking/auth_interceptor.dart';
+import 'package:stylish_store/core/services/secure_storage_service.dart';
 
 class DioConsumer implements ApiConsumer {
   final Dio _dio;
 
-  DioConsumer({Dio? dio})
+  DioConsumer({Dio? dio, SecureStorageService? tokenStorage})
     : _dio =
           dio ??
           Dio(
@@ -18,7 +20,14 @@ class DioConsumer implements ApiConsumer {
               receiveTimeout: const Duration(seconds: 30),
               sendTimeout: const Duration(seconds: 30),
             ),
-          );
+          ) {
+    // Add auth interceptor if tokenStorage is provided
+    if (tokenStorage != null) {
+      _dio.interceptors.add(
+        AuthInterceptor(tokenStorage: tokenStorage, dioInstance: _dio),
+      );
+    }
+  }
 
   @override
   Future<dynamic> get(

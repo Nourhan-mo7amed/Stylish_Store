@@ -1,5 +1,6 @@
 import 'package:stylish_store/core/networking/api_consumer.dart';
 import 'package:stylish_store/core/networking/dio_consumer.dart';
+import 'package:stylish_store/core/services/secure_storage_service.dart';
 import 'package:stylish_store/features/auth/data/networking/auth_api_client.dart';
 import 'package:stylish_store/features/auth/data/repositories/auth_repository.dart';
 import 'package:stylish_store/features/auth/logic/cubits/register_cubit.dart';
@@ -11,6 +12,7 @@ import 'package:stylish_store/features/auth/logic/cubits/forgot_password_cubit.d
 class AuthServiceLocator {
   static final AuthServiceLocator _instance = AuthServiceLocator._internal();
 
+  late final SecureStorageService _tokenStorage;
   late final ApiConsumer _apiConsumer;
   late final AuthApiClient _apiClient;
   late final AuthRepository _authRepository;
@@ -30,19 +32,36 @@ class AuthServiceLocator {
   }
 
   void _initialize() {
-    // Initialize API Consumer
-    _apiConsumer = DioConsumer();
+    // Initialize Secure Token Storage
+    _tokenStorage = SecureStorageService();
+
+    // Initialize API Consumer with token storage for auth interceptor
+    _apiConsumer = DioConsumer(tokenStorage: _tokenStorage);
 
     // Initialize API Client
     _apiClient = AuthApiClient(apiConsumer: _apiConsumer);
 
     // Initialize Repository
-    _authRepository = AuthRepositoryImpl(apiClient: _apiClient);
+    _authRepository = AuthRepositoryImpl(
+      apiClient: _apiClient,
+      tokenStorage: _tokenStorage,
+    );
 
     // Initialize Cubits
     _registerCubit = RegisterCubit(authRepository: _authRepository);
     _loginCubit = LoginCubit(authRepository: _authRepository);
     _forgotPasswordCubit = ForgotPasswordCubit(authRepository: _authRepository);
+  }
+
+  /// Get SecureTokenStorage instance
+  SecureStorageService get tokenStorage {
+    try {
+      return _tokenStorage;
+    } catch (e) {
+      throw Exception(
+        'AuthServiceLocator not initialized. Call AuthServiceLocator.setup() first.',
+      );
+    }
   }
 
   /// Get ApiConsumer instance

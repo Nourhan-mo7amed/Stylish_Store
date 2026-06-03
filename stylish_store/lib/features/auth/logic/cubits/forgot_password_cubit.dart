@@ -12,27 +12,35 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     : _authRepository = authRepository,
       super(const ForgotPasswordInitial());
 
+  /// Safely emit state only if the cubit is not closed
+  /// Prevents "Cannot emit new states after calling close" error
+  void _safeEmit(ForgotPasswordState state) {
+    if (!isClosed) {
+      emit(state);
+    }
+  }
+
   /// Send password reset email
   /// Validates input before calling API
   Future<void> sendResetEmail({required String email}) async {
     // Input validation
     final validationError = _validateEmail(email);
     if (validationError != null) {
-      emit(ForgotPasswordFailure(failure: validationError));
+      _safeEmit(ForgotPasswordFailure(failure: validationError));
       return;
     }
 
-    emit(const ForgotPasswordLoading());
+    _safeEmit(const ForgotPasswordLoading());
 
     final request = ForgotPasswordRequest(email: email.trim());
     final result = await _authRepository.forgotPassword(request);
 
     if (result is Success<dynamic>) {
       final successResult = result as Success;
-      emit(ForgotPasswordSuccess(response: successResult.data));
+      _safeEmit(ForgotPasswordSuccess(response: successResult.data));
     } else if (result is Error<dynamic>) {
       final errorResult = result as Error;
-      emit(ForgotPasswordFailure(failure: errorResult.failure));
+      _safeEmit(ForgotPasswordFailure(failure: errorResult.failure));
     }
   }
 
@@ -57,6 +65,6 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
   /// Reset cubit to initial state
   void reset() {
-    emit(const ForgotPasswordInitial());
+    _safeEmit(const ForgotPasswordInitial());
   }
 }

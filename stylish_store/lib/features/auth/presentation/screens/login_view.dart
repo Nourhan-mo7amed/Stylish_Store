@@ -37,9 +37,31 @@ class _LoginViewState extends State<LoginView> {
         body: BlocListener<LoginCubit, LoginState>(
           listener: (context, state) {
             if (state is LoginSuccess) {
-              _showSuccessDialog(context);
+              // Navigate directly to home after successful login
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('✓ تم تسجيل الدخول بنجاح!'),
+                  duration: Duration(seconds: 2),
+                  backgroundColor: Colors.green,
+                ),
+              );
+              Future.delayed(const Duration(milliseconds: 500), () {
+                if (context.mounted) {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    Routes.homeScreen,
+                    arguments: state.user,
+                  );
+                }
+              });
             } else if (state is LoginFailure) {
-              _showErrorDialog(context, state.failure.message);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('❌ خطأ: ${state.failure.message}'),
+                  duration: const Duration(seconds: 4),
+                  backgroundColor: Colors.red,
+                ),
+              );
             }
           },
           child: SingleChildScrollView(
@@ -152,40 +174,5 @@ class _LoginViewState extends State<LoginView> {
         password: _passwordController.text,
       );
     }
-  }
-
-  void _showErrorDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Login Error'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showSuccessDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Success'),
-        content: const Text('Login successful!'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, Routes.onboardingScreen);
-            },
-            child: const Text('Continue'),
-          ),
-        ],
-      ),
-    );
   }
 }

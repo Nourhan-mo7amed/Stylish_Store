@@ -12,6 +12,14 @@ class RegisterCubit extends Cubit<RegisterState> {
     : _authRepository = authRepository,
       super(const RegisterInitial());
 
+  /// Safely emit state only if the cubit is not closed
+  /// Prevents "Cannot emit new states after calling close" error
+  void _safeEmit(RegisterState state) {
+    if (!isClosed) {
+      emit(state);
+    }
+  }
+
   /// Register user with email, password, and name
   /// Validates input before calling API
   Future<void> register({
@@ -22,11 +30,11 @@ class RegisterCubit extends Cubit<RegisterState> {
     // Input validation
     final validationError = _validateInput(email, password, name);
     if (validationError != null) {
-      emit(RegisterFailure(failure: validationError));
+      _safeEmit(RegisterFailure(failure: validationError));
       return;
     }
 
-    emit(const RegisterLoading());
+    _safeEmit(const RegisterLoading());
 
     final request = RegisterRequest(
       email: email.trim(),
@@ -38,10 +46,10 @@ class RegisterCubit extends Cubit<RegisterState> {
 
     if (result is Success<dynamic>) {
       final successResult = result as Success;
-      emit(RegisterSuccess(user: successResult.data));
+      _safeEmit(RegisterSuccess(user: successResult.data));
     } else if (result is Error<dynamic>) {
       final errorResult = result as Error;
-      emit(RegisterFailure(failure: errorResult.failure));
+      _safeEmit(RegisterFailure(failure: errorResult.failure));
     }
   }
 
@@ -92,6 +100,6 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   /// Reset cubit to initial state
   void reset() {
-    emit(const RegisterInitial());
+    _safeEmit(const RegisterInitial());
   }
 }

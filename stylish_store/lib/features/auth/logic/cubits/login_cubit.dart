@@ -12,17 +12,25 @@ class LoginCubit extends Cubit<LoginState> {
     : _authRepository = authRepository,
       super(const LoginInitial());
 
+  /// Safely emit state only if the cubit is not closed
+  /// Prevents "Cannot emit new states after calling close" error
+  void _safeEmit(LoginState state) {
+    if (!isClosed) {
+      emit(state);
+    }
+  }
+
   /// Login user with email and password
   /// Validates input before calling API
   Future<void> login({required String email, required String password}) async {
     // Input validation
     final validationError = _validateInput(email, password);
     if (validationError != null) {
-      emit(LoginFailure(failure: validationError));
+      _safeEmit(LoginFailure(failure: validationError));
       return;
     }
 
-    emit(const LoginLoading());
+    _safeEmit(const LoginLoading());
 
     final request = LoginRequest(email: email.trim(), password: password);
 
@@ -30,10 +38,10 @@ class LoginCubit extends Cubit<LoginState> {
 
     if (result is Success<dynamic>) {
       final successResult = result as Success;
-      emit(LoginSuccess(user: successResult.data));
+      _safeEmit(LoginSuccess(user: successResult.data));
     } else if (result is Error<dynamic>) {
       final errorResult = result as Error;
-      emit(LoginFailure(failure: errorResult.failure));
+      _safeEmit(LoginFailure(failure: errorResult.failure));
     }
   }
 
@@ -70,6 +78,6 @@ class LoginCubit extends Cubit<LoginState> {
 
   /// Reset cubit to initial state
   void reset() {
-    emit(const LoginInitial());
+    _safeEmit(const LoginInitial());
   }
 }

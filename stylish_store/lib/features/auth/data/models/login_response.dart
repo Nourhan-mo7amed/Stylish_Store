@@ -8,6 +8,7 @@ class LoginResponse extends Equatable {
   final String? role;
   final String? creationAt;
   final String? accessToken;
+  final String? refreshToken;
 
   const LoginResponse({
     required this.id,
@@ -17,6 +18,7 @@ class LoginResponse extends Equatable {
     this.role,
     this.creationAt,
     this.accessToken,
+    this.refreshToken,
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
@@ -28,6 +30,7 @@ class LoginResponse extends Equatable {
       role: json['role'],
       creationAt: json['creationAt'],
       accessToken: json['access_token'],
+      refreshToken: json['refresh_token'],
     );
   }
 
@@ -40,6 +43,7 @@ class LoginResponse extends Equatable {
       'role': role,
       'creationAt': creationAt,
       'access_token': accessToken,
+      'refresh_token': refreshToken,
     };
   }
 
@@ -52,5 +56,6 @@ class LoginResponse extends Equatable {
     role,
     creationAt,
     accessToken,
+    refreshToken,
   ];
 }

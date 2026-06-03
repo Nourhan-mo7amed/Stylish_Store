@@ -6,6 +6,7 @@ import 'package:stylish_store/features/auth/data/models/login_request.dart';
 import 'package:stylish_store/features/auth/data/models/login_response.dart';
 import 'package:stylish_store/features/auth/data/models/forgot_password_request.dart';
 import 'package:stylish_store/features/auth/data/models/forgot_password_response.dart';
+import 'package:stylish_store/features/auth/data/models/token_refresh_response.dart';
 
 class AuthApiClient {
   final ApiConsumer _apiConsumer;
@@ -26,13 +27,31 @@ class AuthApiClient {
 
   /// Login user with email and password
   /// Throws [Failure] on network errors or API errors
-  /// Returns [LoginResponse] on success
+  /// Returns [LoginResponse] on success containing access and refresh tokens
   Future<LoginResponse> login(LoginRequest request) async {
     final response = await _apiConsumer.post(
       ApiEndpoints.login,
       body: request.toJson(),
     );
     return LoginResponse.fromJson(response);
+  }
+
+  /// Refresh the access token using the refresh token
+  /// Throws [Failure] on network errors or API errors
+  /// Returns [TokenRefreshResponse] on success
+  Future<TokenRefreshResponse> refreshToken(String refreshToken) async {
+    final response = await _apiConsumer.post(
+      ApiEndpoints.refreshToken,
+      body: {'refresh_token': refreshToken},
+    );
+    return TokenRefreshResponse.fromJson(response);
+  }
+
+  /// Logout user and invalidate tokens
+  /// Throws [Failure] on network errors or API errors
+  /// Returns response data on success
+  Future<void> logout() async {
+    await _apiConsumer.post(ApiEndpoints.logout);
   }
 
   /// Send password reset email

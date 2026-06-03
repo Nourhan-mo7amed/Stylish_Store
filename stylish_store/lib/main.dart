@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:stylish_store/features/auth/data/models/login_response.dart';
 import 'package:stylish_store/features/auth/services/auth_service_locator.dart';
 import 'config/routes/routes.dart';
 import 'features/auth/presentation/screens/login_view.dart';
 import 'features/auth/presentation/screens/signup_view.dart';
 import 'features/auth/presentation/screens/forgot_password_view.dart';
+import 'features/home/presentation/screens/home_screen.dart';
 
 void main() {
   // Initialize auth service
   AuthServiceLocator.setup();
-
   runApp(
     ScreenUtilInit(
       designSize: const Size(375, 812),
@@ -44,6 +45,12 @@ class MyApp extends StatelessWidget {
           child: const ForgotPasswordView(),
         ),
         Routes.onboardingScreen: (context) => const OnBoardingScreen(),
+       Routes.homeScreen: (context) {
+  final args =
+      ModalRoute.of(context)?.settings.arguments as LoginResponse?;
+
+  return HomeScreen();
+},
       },
     );
   }

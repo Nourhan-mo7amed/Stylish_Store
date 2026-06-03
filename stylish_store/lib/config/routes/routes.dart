@@ -1,6 +1,7 @@
 // Screens Exports
 export 'package:stylish_store/splash_screen.dart';
 export 'package:stylish_store/features/onboarding/onBoarding_screen.dart';
+export 'package:stylish_store/features/home/presentation/screens/home_screen.dart';
 
 // Models
 export 'package:stylish_store/features/onboarding/onboarding_model.dart';
@@ -25,4 +26,5 @@ class Routes {
   static const String loginView = '/login';
   static const String signupView = '/signup';
   static const String forgotPasswordView = '/forgot-password';
+  static const String homeScreen = '/home';
 }
